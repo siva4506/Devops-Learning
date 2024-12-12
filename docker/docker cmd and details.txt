@@ -1,0 +1,259 @@
+docker cmd
+------------------------
+over all cmd for docker
+
+Common Commands:
+  run         Create and run a new container from an image
+  exec        Execute a command in a running container
+  ps          List containers
+  build       Build an image from a Dockerfile
+  pull        Download an image from a registry
+  push        Upload an image to a registry
+  images      List images
+  login       Log in to a registry
+  logout      Log out from a registry
+  search      Search Docker Hub for images
+  version     Show the Docker version information
+  info        Display system-wide information
+
+Management Commands:
+  builder     Manage builds
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  plugin      Manage plugins
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Swarm Commands:
+  swarm       Manage Swarm
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  import      Import the contents from a tarball to create a filesystem image
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
+
+docker command --help  (docker system --help)
+
+docker basic CMD:
+-----------------------------------
+
+docker search nginx (searching for avalable images dockerhub)
+docker images (list of docker images)
+docker pull nginx (dowload images) by default latest version
+docker pull nginx <tag> (dowload spacific version)
+df -h (storage)
+docker system df (images size)
+docker create --name <name> <imagename> (only container create)
+docker run --name <name> <imagename> (container create and run)
+docker run -d --name <name> <imagename> (container run backgrount)
+docker run -d -it --name <any_name> <container_image_name> /bin/sh (run for os image)
+docker run -d -it --name <name> -p 80:80 <docker_image> (contain run local port)
+docker ps -a (list of containers)
+docker rmi <docker_image> (remove the docker image)
+docker rm <container_id> (remove the container)
+docker container prune (remove all stoped containers)
+docker exec -it <container_id> /bin/sh (login container)
+docker exec <container_id> <linux_cmd> (without container login cmd exquite)
+docker cp <server_file_bath> <container_id>:/<container_bath> (copy file server to docker_container)
+docker cp <container_id>:<container_bath> <server_file_bath> (copy file docker_container to server)
+docker stop <container_id> (container stop)
+docker start <container_id> (container_start)
+docker stats (contain status check)
+docker logs <container_id> (logs check)
+docker top <container_id> (contain performance check)
+docker history <docker_image> (docker iamges changes check)
+docker save <container_id> > file_name.tar (backup for container_image)
+docker load -i file_name.tar (load the docker image for local or extract)
+docker rmi $(docker images -a -q) (remove all images single cmd)
+docker commit <container_id> <image_name>:<tag> (update container conver image)
+docker login (login for own docker hup push/pull)
+docker tag <registery>:<tag> <registry>:<tag> (tag name change)
+docker push <docker_image:tag>
+docker inspect
+
+-v  host and container mount loaction set
+
+docker file create:
+---------------------------------------
+
+FROM 
+
+WORKDIR 
+
+COPY . /app
+
+ADD (extract file)
+
+EXPOSE 80
+
+ENV NAME World
+
+ARG
+
+RUN
+
+CMD ["python", "app.py"] (end of command over write)
+
+ENTRYPOINT (end of the cmd not over write)
+
+VOLUME (add volume)
+
+USER (cmd execut user)
+
+MAINTAINER
+
+
+docker exe:
+-----------------------------
+docker build .
+docker build -f <docker file location>
+docker buil -t <repostrory>:<tag> .
+
+
+docker network:
+--------------------------
+docker network ls
+docker run -d -it --name <any_name> -p 80:80 <image_id> (port forworting)
+docker run -d -it --name <any_name> --nertwork=host <img_id> (network select)
+docker run -d -it --name (any_nam> -P <image_is> (automaticaly_port forworting)
+docker port <container_id> (container runing port check)
+ip a (view information about the network interfaces)
+docker network create my_bridge_network (simple bridge network create)
+docker network create --driver overlay my_overlay_network ( If you want to specify network driver)
+docker network create --subnet=172.18.0.0/16 --gateway=172.18.0.1 my_custom_network (custom ip address)
+docker network rm <NETWORK_NAME_OR_ID> (remove network)
+docker network inspect <network_name>
+
+
+docker volume & types:
+---------------------------------
+docker volume ls
+docker volume create <name> (its create volume docker location /var/lib/docker/volume/volume_name/_data)
+docker run -d -it --name <name> -mount soures=<volume_name>,destination=<container_volume_desc_loc> <image_id> (this methort volume)
+docker run -d -it --name <name> -v <host_volume_soures_loc>:<container_volume_desc_loc> <image_id> (thsi bind address mount any loc doc_ho)
+docker volume inspect <volume_name>
+
+
+docker swarm,AWS ECS,kubernetes (docker orchestration)
+----------------------------------------------------------
+docker swarm: (master and node)
+---------------------------------------
+docker swarm init --advertise-addr <hots_ip> (install swarm cmd)
+docker swarm join-token manager (join multiple swarm master add token)
+docker swarm join --token <your_token> <host_ip> (join master to node ) (run this cmd node host)
+docker node ls 
+docker node promote <node_hostname> (worker to leader upgarade)
+docker node demote <node_hostname> (leader to worker downgrade)
+docker node update --availability drain <node_hostname> (node container all data move to another container)
+docker node update --availability pause <node_hostname> (node container new application not lanunch)
+docker node update --availability active <node_hostname> (ready to work)
+docker service ls (container manitain using service)
+docker service create --replices 2 -p 80:80 --name <any_name> (create container)
+sudo docker service ps <service_name) (check for which host runing service)
+docker service create --mode global -p 81:80 --name <name> <image_name> (create container all node)
+
+docker swarm network:
+-----------------------------------
+docker network ls (ingress new network type add)
+docker network create -d overlay newoverlay
+
+
+scale up and down:
+----------------------------
+docker service scale <container_name>=5 (increse the replices) ---->scale up
+docker service scale <container_name>=3 (increse the replices) ---->scale down
+
+rolling update:
+----------------------------
+docker update --image <image_name>:<version> <your_service_name>  (new version update)
+docker service rollback <your_service_name>  (old version down greade)
+
+
+docker compose:  (ubuntu)
+-------------------------
+docker apt-cache search docker-compose (search for compose file avalable)
+docker apt-get install docker-compose (install docker compose)
+docker-compose up (you have using docker-compose.yaml using this cmd to up service)
+docker-compose -f <your application name> up  (you have differend application name using this cmd)
+docker-compose up -d (run application background)
+docker-compose -f app.yaml images (compose images runing list)
+docker-compose -f app.yaml ps
+docker-compose -f app.yaml down
+docker-compose -f app.yaml up -d
+docker-compose -f app.yaml restart
+docker-compose -f app.yaml ps -a
+docker-compose -f app.yaml restart <service_name>  (one service restart )
+docker-compose -f app.yaml stop <service_name>
+docker-compose -f app.yaml logs <service_name>
+docker-compose -f app.yaml config (error check)
+
+
+cpu & memory resource allocation:
+--------------------------------------
+docker info
+free -m
+docker run --memory-reservation=256 -m 512m -d --name <any_name> <iamge_name>
+docker stats
+docker inspect
+docker run --cpu=1 -d --name <any_name> <container_name>
+docker run --cpu-shares=1000 --cpu=1 -d --name  <any_name> <container_name>
+docker stack deploy --compose-file docker-compose-file <any_name>
+docker stack
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+

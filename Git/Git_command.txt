@@ -1,0 +1,35 @@
+cmd
+----------------------
+git config --global user.name "siva4506"
+git config --global user.email “sivajsb3@gmail.com”
+
+git clone 
+
+git add 
+git status
+git commit -m ""
+git push origin main
+
+git pull
+
+git init
+git add .
+git status
+git commit -m 'commit all'
+git remote add origin https://github.com/siva4506/error2.git
+git branch -a
+git push origin master (or) git branch -m main
+
+git checkout "new branch"
+
+git diff "branch name"
+
+git merge "branch name"
+
+git branch "new branch name"
+
+
+
+
+
+
